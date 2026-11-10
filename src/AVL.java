@@ -1,5 +1,7 @@
 package src;
 
+import  java.lang.Math.*;
+
 public class AVL {
     private int bal;
     private double poids = -1;
@@ -53,6 +55,7 @@ public class AVL {
         return bal;
     }
 
+
     /**
      *  SETTER
      */
@@ -77,7 +80,8 @@ public class AVL {
         this.bal = bal;
     }
 
-    //TODO Ajouter, Supprimer, Rechercher, Equilibrer
+
+    //TODO Supprimer, Rechercher, Equilibrer
 
     /**
      * Fonction permettant de retourner si l'AVL est vide ou pas.
@@ -92,16 +96,62 @@ public class AVL {
         }
     }
 
+    /**
+     * Fonction retournant si oui ou non le noeud concerné est une feuille.
+     * @return boolean
+     */
+    public boolean estFeuille(){
+        if(this.getPoids() > -1 || this.getG() == null || this.getD() == null ){
+            return true;
+        }
+        return false;
+    }
 
     /**
-     * Fonction permettant d'ajouter un double à un AVL, cette fonction appellera Equilibrer() pour garder les proprièté de l'AVL
+     * Fonction retournant la hauteur d'un noeud.
+     * @return int
+     */
+    public int hauteur(){
+        if (this.estVide()){
+            return -1;
+        }
+        else{
+            if(this.estFeuille()){
+                return 0;
+            }
+            else{
+                int hg = this.getG().hauteur();
+                int hd = this.getD().hauteur();
+                return 1 + Math.max(hg, hd);
+            }
+        }
+    }
+
+
+    /**
+     * Procédure faisant la mise à jour de toutes les balances de l'AVL.
+     *
+     */
+    private void majBalance(){
+        if(!(this.estVide())){
+            if(this.estFeuille()){
+                this.setBal(0);
+            }
+            else{
+                this.setBal(Math.abs(this.getD().hauteur() - this.getG().hauteur()));
+                this.getG().majBalance();
+                this.getD().majBalance();
+            }
+
+        }
+    }
+
+    /**
+     * Fonction permettant d'ajouter un double à un AVL, cette fonction appellera majBalance() et  Equilibrer() pour garder les proprièté de l'AVL
      * @param p
      * @return
      */
-
-    // TODO : Créer fonction recapBalance qui : Met à jours toutes les balances, si u noued à *2 ou +2 retourner le noeud.
-
-    public AVL Ajouter(double p) {
+    public AVL ajouter(double p) {
         if (this.estVide()) {
             this.setPoids(p);
             this.setBal(0);
@@ -114,13 +164,15 @@ public class AVL {
             }
             else{
                 if(this.getPoids() < p ){
-                    this.getD().Ajouter(p);
-                    int h
+                    this.getD().ajouter(p);
                 }
                 else{
-                    this.getG().Ajouter(p);
+                    this.getG().ajouter(p);
                 }
             }
+            this.majBalance(); // A voir si on met majBalance() dans la fonction equilibre()
+            this.equilibre();
+            return this;
         }
     }
 
@@ -170,6 +222,7 @@ public class AVL {
         return B;
     }
 
+
     /**
      *
      * @return
@@ -192,6 +245,11 @@ public class AVL {
         }
         this.D = this.D.rotationDroite();
         return this.rotationGauche();
+    }
+
+    // TODO :
+    public void equilibre(){
+
     }
 }
 
