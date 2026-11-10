@@ -54,6 +54,10 @@ public class Tree2D {
 
     }
 
+    /**
+     *
+     * @param type
+     */
     public void Coupure(String type){
         if(type.equals("A")){
             if(((w/h)>2) || ((h/w) <= 2)){ // Cas coupure sur X
@@ -109,5 +113,77 @@ public class Tree2D {
          }
          this.g.NoeudToFeuille();
          this.d.NoeudToFeuille();
+    }
+
+    //Getters
+
+    public int getH() {
+        return h;
+    }
+
+    public Tree2D getD() {
+        return d;
+    }
+
+    public int getW() {
+        return w;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public Color getCouleur() {
+        return couleur;
+    }
+
+    public Tree2D getG() {
+        return g;
+    }
+
+    public Tree2D getPredecesseur() {
+        return predecesseur;
+    }
+
+    //Setters
+
+    public void setD(Tree2D d) {
+        this.d = d;
+    }
+
+    public void setCouleur(Color couleur) {
+        this.couleur = couleur;
+    }
+
+    public void setFeuille(boolean feuille) {
+        this.feuille = feuille;
+    }
+
+    public void setG(Tree2D g) {
+        this.g = g;
+    }
+
+    public void setH(int h) {
+        this.h = h;
+    }
+
+    public void setW(int w) {
+        this.w = w;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setPredecesseur(Tree2D predecesseur) {
+        this.predecesseur = predecesseur;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 }
