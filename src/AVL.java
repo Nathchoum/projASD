@@ -2,21 +2,31 @@ package src;
 
 public class AVL {
     private int bal;
-    private double poids;
+    private double poids = -1;
     private AVL G;
     private AVL D;
     private Tree2D origine;
 
     /**
+     * Constructeur sommet AVL
      *
      * @param p
      * @param origine
-     * @param b
      */
-    public AVL (double p, Tree2D origine, int b) {
+    public AVL (double p, Tree2D origine) {
         poids = p;
-        this.origine= origine;
-        bal = bal;
+        this.origine = origine;
+        bal = 0;
+    }
+
+
+    /**
+     * Constructeur noeud AVL
+     * @param poids
+     */
+    public AVL (double poids){
+        this.poids = poids;
+        this.bal = 0;
     }
 
     /**
@@ -74,7 +84,7 @@ public class AVL {
      * @return boolean
      */
     public boolean estVide() {
-        if(this.getG() == null || this.getD() == null ){
+        if(this.getPoids() == -1 || this.getG() == null || this.getD() == null ){
             return true;
         }
         else{
@@ -85,12 +95,32 @@ public class AVL {
 
     /**
      * Fonction permettant d'ajouter un double à un AVL, cette fonction appellera Equilibrer() pour garder les proprièté de l'AVL
-     * @param poids
+     * @param p
      * @return
      */
-    public AVL Ajouter(double poids){
-        if(this.estVide()){
 
+    // TODO : Créer fonction recapBalance qui : Met à jours toutes les balances, si u noued à *2 ou +2 retourner le noeud.
+
+    public AVL Ajouter(double p) {
+        if (this.estVide()) {
+            this.setPoids(p);
+            this.setBal(0);
+            this.setD(null);
+            this.setG(null);
+            return this;
+        } else {
+            if (this.getPoids() == p) {
+                return this;
+            }
+            else{
+                if(this.getPoids() < p ){
+                    this.getD().Ajouter(p);
+                    int h
+                }
+                else{
+                    this.getG().Ajouter(p);
+                }
+            }
         }
     }
 
