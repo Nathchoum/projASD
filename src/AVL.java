@@ -1,6 +1,7 @@
 package src;
 
 public class AVL {
+    private int bal;
     private double poids;
     private AVL G;
     private AVL D;
@@ -10,10 +11,12 @@ public class AVL {
      *
      * @param p
      * @param origine
+     * @param b
      */
-    public AVL (double p, Tree2D origine) {
+    public AVL (double p, Tree2D origine, int b) {
         poids = p;
-        this.origine= origine;
+        origine= origine;
+        bal = bal;
     }
 
     /**
@@ -36,6 +39,10 @@ public class AVL {
         return origine;
     }
 
+    public int getBal() {
+        return bal;
+    }
+
     /**
      *  SETTER
      */
@@ -56,5 +63,32 @@ public class AVL {
         this.origine = origine;
     }
 
+    public void setBal(int bal) {
+        this.bal = bal;
+    }
+
     //TODO Ajouter, Supprimer, Rechercher, Equilibrer
+
+    /**
+     * Fonction permettant
+     * @return
+     */
+    public boolean estVide() {
+        if(this.getG() == null || this.getD() == null ){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    /**
+     * Fonction permettant d'ajouter un double à un AVL, cette fonction appellera Equilibrer() pour garder les proprièté de l'AVL
+     * @param poids
+     * @return
+     */
+    public AVL Ajouter(double poids){
+        if()
+    }
 }
