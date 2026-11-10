@@ -70,8 +70,8 @@ public class AVL {
     //TODO Ajouter, Supprimer, Rechercher, Equilibrer
 
     /**
-     * Fonction permettant
-     * @return
+     * Fonction permettant de retourner si l'AVL est vide ou pas.
+     * @return boolean
      */
     public boolean estVide() {
         if(this.getG() == null || this.getD() == null ){
@@ -89,6 +89,8 @@ public class AVL {
      * @return
      */
     public AVL Ajouter(double poids){
-        if()
+        if(this.estVide()){
+
+        }
     }
 }
