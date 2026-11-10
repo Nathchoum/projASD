@@ -7,6 +7,16 @@ public class AVL {
     private Tree2D origine;
 
     /**
+     *
+     * @param p
+     * @param origine
+     */
+    public AVL (double p, Tree2D origine) {
+        poids = p;
+        this.origine= origine;
+    }
+
+    /**
      *  GETTER
      */
 
