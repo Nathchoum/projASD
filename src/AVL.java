@@ -15,7 +15,7 @@ public class AVL {
      */
     public AVL (double p, Tree2D origine, int b) {
         poids = p;
-        origine= origine;
+        this.origine= origine;
         bal = bal;
     }
 
@@ -93,4 +93,75 @@ public class AVL {
 
         }
     }
+
+    /**
+     *
+     * @return
+     */
+    public AVL rotationDroite() {
+        AVL B = this.G;
+
+        if (B == null) {
+            return this;
+        }
+
+        int a = this.bal;
+        int b = B.bal;
+
+        this.G = B.D;
+        B.D = this;
+
+        this.bal = a - Math.min(b, 0) + 1;
+        B.bal = Math.max(a + 2, Math.max(a + b + 2, b + 1));
+
+        return B;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public AVL rotationGauche() {
+        AVL B = this.D;
+
+        if (B == null) {
+            return this;
+        }
+
+        int a = this.bal;
+        int b = B.bal;
+
+        this.D = B.G;
+        B.G = this;
+
+        this.bal = a - Math.max(b, 0) - 1;
+        B.bal = Math.min(a - 2, Math.min(a + b - 2, b - 1));
+
+        return B;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public AVL rotationGaucheDroite() {
+        if (this.G == null) {
+            return this;
+        }
+        this.G = this.G.rotationGauche();
+        return this.rotationDroite();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public AVL rotationDroiteGauche() {
+        if (this.D == null) {
+            return this;
+        }
+        this.D = this.D.rotationDroite();
+        return this.rotationGauche();
+    }
 }
+
