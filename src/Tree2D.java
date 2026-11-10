@@ -115,7 +115,9 @@ public class Tree2D {
          this.d.NoeudToFeuille();
     }
 
-    //Getters
+    /**
+     *Getters
+     */
 
     public int getH() {
         return h;
@@ -149,7 +151,9 @@ public class Tree2D {
         return predecesseur;
     }
 
-    //Setters
+    /**
+     *Setters
+     */
 
     public void setD(Tree2D d) {
         this.d = d;
