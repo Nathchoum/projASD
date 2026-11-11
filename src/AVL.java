@@ -183,8 +183,8 @@ public class AVL {
     }
 
     /**
-     *
-     * @return
+     * Fonction faisant une ROTD sur un AVL et le renvoie.
+     * @return AVL
      */
     public AVL rotationDroite() {
         AVL B = this.G;
@@ -206,8 +206,8 @@ public class AVL {
     }
 
     /**
-     *
-     * @return
+     * Fonction faisant une ROTG sur un AVL et le renvoie.
+     * @return AVL
      */
     public AVL rotationGauche() {
         AVL B = this.D;
@@ -230,8 +230,8 @@ public class AVL {
 
 
     /**
-     *
-     * @return
+     * Fonction faisant une DROTD sur un AVL et le renvoie
+     * @return AVL
      */
     public AVL rotationGaucheDroite() {
         if (this.G == null) {
@@ -242,8 +242,8 @@ public class AVL {
     }
 
     /**
-     *
-     * @return
+     * Fonction faisant une DROTG sur un AVL et le renvoie
+     * @return AVL
      */
     public AVL rotationDroiteGauche() {
         if (this.D == null) {
@@ -253,6 +253,10 @@ public class AVL {
         return this.rotationGauche();
     }
 
+    /**
+     * Fonction équilibrant un AVL pour lui faire conserver ses conditions et le retourne.
+     * @return AVL
+     */
     public AVL equilibre(){
         this.majBalance(); // Met à jour toutes les balances.
         if(this.getBal() == 2){
