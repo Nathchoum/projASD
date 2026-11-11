@@ -1,6 +1,6 @@
 package src;
 
-import  java.lang.Math.*;
+import  java.lang.Math.*; // Fonction abs() pour la valeur absolue
 
 public class AVL {
     private int bal;
@@ -153,6 +153,7 @@ public class AVL {
      */
     public AVL ajouter(double p) {
         if (this.estVide()) {
+            // Mise à jour de l'AVL en un AVL avec seulement une racine
             this.setPoids(p);
             this.setBal(0);
             this.setD(null);
@@ -170,8 +171,13 @@ public class AVL {
                     this.getG().ajouter(p);
                 }
             }
-            this.majBalance(); // A voir si on met majBalance() dans la fonction equilibre()
-            this.equilibre();
+            // Mise à jour de l'AVL pour respecter les conditions de ce dernier
+            AVL newAvl = this.equilibre();
+            this.setPoids(newAvl.getPoids());
+            this.setBal(newAvl.getBal());
+            this.setD(newAvl.getD());
+            this.setG(newAvl.getG());
+            this.setOrigine(newAvl.getOrigine());
             return this;
         }
     }
@@ -247,9 +253,27 @@ public class AVL {
         return this.rotationGauche();
     }
 
-    // TODO :
-    public void equilibre(){
-
+    public AVL equilibre(){
+        this.majBalance(); // Met à jour toutes les balances.
+        if(this.getBal() == 2){
+            if(this.getD().getBal() >= 0){
+                return this.rotationGauche();
+            }
+            else{
+                return this.rotationDroiteGauche();
+            }
+        }
+        else {
+            if (this.getBal() == -2) {
+                if (this.getG().getBal() <= 0) {
+                    return this.rotationDroite();
+                }
+                else {
+                    return this.rotationGaucheDroite();
+                }
+            }
+            return this;
+        }
     }
 }
 
