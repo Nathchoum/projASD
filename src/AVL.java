@@ -2,8 +2,6 @@ package src;
 
 import  java.lang.Math.*; // Fonction abs() pour la valeur absolue
 
-//TODO Supprimer, Rechercher
-
 public class AVL {
     private int bal;
     private double poids = -1;
