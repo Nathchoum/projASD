@@ -2,6 +2,8 @@ package src;
 
 import  java.lang.Math.*; // Fonction abs() pour la valeur absolue
 
+//TODO Supprimer, Rechercher
+
 public class AVL {
     private int bal;
     private double poids = -1;
@@ -12,10 +14,10 @@ public class AVL {
     /**
      * Constructeur sommet AVL
      *
-     * @param p
-     * @param origine
+     * @param p le poid
+     * @param origine l'arbre 2D auquel il fait référence
      */
-    public AVL (double p, Tree2D origine) {
+    public AVL(double p, Tree2D origine) {
         poids = p;
         this.origine = origine;
         bal = 0;
@@ -24,18 +26,19 @@ public class AVL {
 
     /**
      * Constructeur noeud AVL
-     * @param poids
+     *
+     * @param poids le poid
      */
-    public AVL (double poids){
+    public AVL(double poids) {
         this.poids = poids;
         this.bal = 0;
     }
 
     /**
-     *  GETTER
+     * GETTER
      */
 
-    public double getPoids(){
+    public double getPoids() {
         return poids;
     }
 
@@ -47,7 +50,7 @@ public class AVL {
         return G;
     }
 
-    public Tree2D getOrigine(){
+    public Tree2D getOrigine() {
         return origine;
     }
 
@@ -57,14 +60,14 @@ public class AVL {
 
 
     /**
-     *  SETTER
+     * SETTER
      */
 
-    public void setPoids(double p){
+    public void setPoids(double p) {
         this.poids = p;
     }
 
-    public void setG(AVL g){
+    public void setG(AVL g) {
         this.G = g;
     }
 
@@ -81,27 +84,26 @@ public class AVL {
     }
 
 
-    //TODO Supprimer, Rechercher, Equilibrer
-
     /**
      * Fonction permettant de retourner si l'AVL est vide ou pas.
+     *
      * @return boolean
      */
     public boolean estVide() {
-        if(this.getPoids() == -1 || this.getG() == null || this.getD() == null ){
+        if (this.getPoids() == -1 || this.getG() == null || this.getD() == null) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
     /**
      * Fonction retournant si oui ou non le noeud concerné est une feuille.
+     *
      * @return boolean
      */
-    public boolean estFeuille(){
-        if(this.getPoids() > -1 || this.getG() == null || this.getD() == null ){
+    public boolean estFeuille() {
+        if (this.getPoids() > -1 || this.getG() == null || this.getD() == null) {
             return true;
         }
         return false;
@@ -109,17 +111,16 @@ public class AVL {
 
     /**
      * Fonction retournant la hauteur d'un noeud.
+     *
      * @return int
      */
-    public int hauteur(){
-        if (this.estVide()){
+    public int hauteur() {
+        if (this.estVide()) {
             return -1;
-        }
-        else{
-            if(this.estFeuille()){
+        } else {
+            if (this.estFeuille()) {
                 return 0;
-            }
-            else{
+            } else {
                 int hg = this.getG().hauteur();
                 int hd = this.getD().hauteur();
                 return 1 + Math.max(hg, hd);
@@ -132,12 +133,11 @@ public class AVL {
      * Procédure faisant la mise à jour de toutes les balances de l'AVL.
      *
      */
-    private void majBalance(){
-        if(!(this.estVide())){
-            if(this.estFeuille()){
+    private void majBalance() {
+        if (!(this.estVide())) {
+            if (this.estFeuille()) {
                 this.setBal(0);
-            }
-            else{
+            } else {
                 this.setBal(Math.abs(this.getD().hauteur() - this.getG().hauteur()));
                 this.getG().majBalance();
                 this.getD().majBalance();
@@ -148,8 +148,9 @@ public class AVL {
 
     /**
      * Fonction permettant d'ajouter un double à un AVL, cette fonction appellera majBalance() et  Equilibrer() pour garder les proprièté de l'AVL
-     * @param p
-     * @return
+     *
+     * @param p Le poid
+     * @return AVL
      */
     public AVL ajouter(double p) {
         if (this.estVide()) {
@@ -162,12 +163,10 @@ public class AVL {
         } else {
             if (this.getPoids() == p) {
                 return this;
-            }
-            else{
-                if(this.getPoids() < p ){
+            } else {
+                if (this.getPoids() < p) {
                     this.getD().ajouter(p);
-                }
-                else{
+                } else {
                     this.getG().ajouter(p);
                 }
             }
@@ -184,6 +183,7 @@ public class AVL {
 
     /**
      * Fonction faisant une ROTD sur un AVL et le renvoie.
+     *
      * @return AVL
      */
     public AVL rotationDroite() {
@@ -207,6 +207,7 @@ public class AVL {
 
     /**
      * Fonction faisant une ROTG sur un AVL et le renvoie.
+     *
      * @return AVL
      */
     public AVL rotationGauche() {
@@ -231,6 +232,7 @@ public class AVL {
 
     /**
      * Fonction faisant une DROTD sur un AVL et le renvoie
+     *
      * @return AVL
      */
     public AVL rotationGaucheDroite() {
@@ -243,6 +245,7 @@ public class AVL {
 
     /**
      * Fonction faisant une DROTG sur un AVL et le renvoie
+     *
      * @return AVL
      */
     public AVL rotationDroiteGauche() {
@@ -255,29 +258,64 @@ public class AVL {
 
     /**
      * Fonction équilibrant un AVL pour lui faire conserver ses conditions et le retourne.
+     *
      * @return AVL
      */
-    public AVL equilibre(){
+    public AVL equilibre() {
         this.majBalance(); // Met à jour toutes les balances.
-        if(this.getBal() == 2){
-            if(this.getD().getBal() >= 0){
+        if (this.getBal() == 2) {
+            if (this.getD().getBal() >= 0) {
                 return this.rotationGauche();
-            }
-            else{
+            } else {
                 return this.rotationDroiteGauche();
             }
-        }
-        else {
+        } else {
             if (this.getBal() == -2) {
                 if (this.getG().getBal() <= 0) {
                     return this.rotationDroite();
-                }
-                else {
+                } else {
                     return this.rotationGaucheDroite();
                 }
             }
             return this;
         }
     }
-}
 
+    /**
+     * Fonction permettant de supprimer le maximum d'un AVL et renvoie l'arbre après suppression
+     * @return
+     */
+    public AVL supprimer_max(){
+        if(this.getD().estVide()){
+            return this.getG(); // On renvoie this.G car le max est le poid de la racine, en le supprimant on à juste a renvoyer this.G
+        }
+        else{
+            this.setD(this.getD().supprimer_max()); // Sinon, on appelle la fonction sur son fils droit. Si son fils droit n'a pas de fils droit alors c'est lui le max et dans ce cas on renvoie le fils gauche. S'il a un fils gauche, on remplace le fils droit par le gauche et sinon il sera = à NULL
+            // Mise à jour des balances de l'arbre
+            this.equilibre();
+            return this;
+        }
+    }
+
+    /**
+     * Fonction permettant de rechercher un nœud ayant le poids rechercher puis le renvoie.
+     *
+     * @param poids
+     * @return AVL
+     */
+
+    public AVL rechercher(double poids) {
+        if (!(this.estVide())) {
+            if (this.getPoids() == poids) {
+                return this;
+            } else {
+                if (this.getPoids() > poids) {
+                    return this.getG().rechercher(poids);
+                } else {
+                    return this.getD().rechercher(poids);
+                }
+            }
+        }
+        return null;
+    }
+}
