@@ -1,6 +1,11 @@
 package src;
 
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class Tree2D {
     private Tree2D g;
@@ -64,6 +69,16 @@ public class Tree2D {
         this.predecesseur = pred;
     }
 
+
+
+    public String noeud2String(){
+        String x = String.valueOf(this.getX());
+        String y = String.valueOf(this.getY());
+        // Voir pour ajouter les var nécéssaire à la reproduction
+        return x + " " + y;
+    }
+
+
     /**
      *
      * @param type
@@ -105,7 +120,9 @@ public class Tree2D {
 
     //TODO GenererImage qui va générer l'image resultat à partir du 2D Arbre complet
 
-    //TODO NoeudToFeuille qui parcours l'arbre à la recherche de noeud sans fils. Si un noeud est sans fils, on remonte à son parent et on créer un nouveau noeud feuille.
+    /**
+     * Procédure qui parcourt l'arbre à la recherche de nœud sans fils. Si un nœud est sans fils, on remonte à son parent et on crée une nouvelle feuille.
+     */
     public void NoeudToFeuille(){
          if (this.getG() == null && this.getD() == null){
              /*
@@ -127,6 +144,43 @@ public class Tree2D {
          if(!(this.getD() == null)){
              this.getD().NoeudToFeuille();
          }
+
+    }
+
+    /**
+     * Fonction sauvegardant le Tree2D dans un fichier texte.
+     */
+    public void sauvegarde(String fileName){
+        // Variables :
+        try {
+            FileWriter writer = new FileWriter(fileName);
+            Queue<Tree2D> Q = new LinkedList<Tree2D>();
+            Tree2D s;
+            String noeud = "";
+            int compteur = 0;
+            // ------------
+
+            Q.add(this);
+            while(!(Q.isEmpty())){
+                s = Q.poll(); // Retourne le premier element de la File et le retire.
+                noeud = s.noeud2String();
+                writer.write(noeud + System.lineSeparator());
+                compteur = compteur + 1;
+                if(!(this.getG() == null)){
+                    Q.add(this.getG());
+                }
+                if(!(this.getD() == null)){
+                    Q.add(this.getD());
+                }
+            }
+            writer.close();
+            System.out.println("Sauvegarde Réussite : " + fileName);
+        }
+        catch(IOException e){
+            System.out.println("Sauvegarde Impossible");
+            e.printStackTrace();
+        }
+
 
     }
 
