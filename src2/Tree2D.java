@@ -18,6 +18,8 @@ public class Tree2D {
     public Tree2D (int weight, int height){
         this.w = weight;
         this.h = height;
+        this.x = 0;
+        this.y = 0;
     }
 
     /**
@@ -34,6 +36,15 @@ public class Tree2D {
         this.w = w;
         this.h = h;
         this.couleur = couleur;
+    }
+
+    /**
+     *Permet de calculer le poids d'un nœud, afin de l'envoyer dans l'avl
+     * @return le poids d'un nœud
+     */
+    public double CalculPoids(){
+        double denominateur = Math.pow((w+h),1.5);
+        return ( (w * h) / denominateur);
     }
 
     /**

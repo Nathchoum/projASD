@@ -6,6 +6,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/* TODO : 1) Changer les types des Args.
+          2) passer de la lettre à la couleur
+          3) Refaire toImage()
+*/
+
+
 public class Main {
     public static void main(String[] args) {
         if (args.length != 1) {
@@ -14,6 +20,7 @@ public class Main {
         }
 
         try {
+            // generateTree()
             // étape 1 : récupère les arguments d'entrée
             String strategie = args[0];
             String largeur = args[1];
@@ -34,22 +41,42 @@ public class Main {
 
             //étape 2 : création tree2D ( nom origine ) avec les parametress de w et de h donné en entrée
             Tree2D racine = new Tree2D(largeur, hauteur);
+            //étape 2 + : on coupe sur la racine, et on crée l'avl avant la boucle
+            AVL avlracine = new AVL();
+            avlracine.ajouter(racine.CalculPoids(), racine);
+
+            int nbDivision = 0;
+            String[] ligne1 = tousLesElements.get(0);
             if(variante == "A"){
-                racine.chooseDivisionA();
+                racine.chooseDivisionA(tousLesElements.get(nbDivision)[1], tousLesElements.get(nbDivision)[2], tousLesElements.get(nbDivision)[3], tousLesElements.get(nbDivision)[4]);
+                nbDivision++;
             }
             else{
-                racine.chooseDivisionB();
+                racine.chooseDivisionB(tousLesElements.get(nbDivision)[1], tousLesElements.get(nbDivision)[2], tousLesElements.get(nbDivision)[3], tousLesElements.get(nbDivision)[4]);
+                nbDivision++;
             }
-            /*
-            étape 2 + : on coupe sur la racine, et on crée l'avl avant la boucle
-            (début de la boucle, tant que nbNoeudADIviser n'est pas atteint)
-            étape 3 : calculPoids du noeud, puis créer l'AVL avec ce poids
-            étape 4 : recherche plsu gros poids dans l'avl
-            étape 5 : la recherche va renvoyer le noeud voulu, puis coupure sur ce noeud
-            étape 6 : création des 2 fils ajoutés dnas le tree2D
-            étape 7 : on reboucle
-            étape 8 : génération de l'image à partir du tree2D finale
-             */
+            avlracine.ajouter(racine.getG().CalculPoids(), racine.getG());
+            avlracine.ajouter(racine.getD().CalculPoids(), racine.getD());
+
+            // (début de la boucle, tant que nbNoeudADIviser n'est pas atteint)
+            while(nbDivision < nbFeuillesAdiviser){
+                Tree2D noeudACouper = avlracine.chooseFeuille();
+                if(variante == "A"){
+                    noeudACouper.chooseDivisionA(tousLesElements.get(nbDivision)[1], tousLesElements.get(nbDivision)[2], tousLesElements.get(nbDivision)[3], tousLesElements.get(nbDivision)[4]);
+                    nbDivision++;
+                }
+                else{
+                    noeudACouper.chooseDivisionB(tousLesElements.get(nbDivision)[1], tousLesElements.get(nbDivision)[2], tousLesElements.get(nbDivision)[3], tousLesElements.get(nbDivision)[4]);
+                    nbDivision++;
+                }
+                // étape 3 : calculPoids du noeud, puis créer l'AVL avec ce poids
+                avlracine.ajouter(noeudACouper.getD().CalculPoids(), noeudACouper.getD());
+                avlracine.ajouter(noeudACouper.getG().CalculPoids(), noeudACouper.getG());
+
+            }
+            // Le Tree2D est complet on crée l'image
+            racine.toImage();
+
 
         }
 
