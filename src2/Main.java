@@ -1,6 +1,9 @@
 package src2;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -19,6 +22,12 @@ public class Main {
             String largeurLigne = args[5];
             String variante = args[6];
             String filename = args[7];
+
+            List<String> listeLignes = Files.readAllLines(Paths.get(filename));
+            String[] tabLignes = listeLignes.toArray(new String[0]);
+            for(String ligne : tabLignes){
+                String[] elements = ligne.split("\\s+");
+            }
 
             //étape 2 : création tree2D ( nom origine ) avec les parametress de w et de h donné en entrée
             Tree2D racine = new Tree2D(largeur, hauteur);
@@ -41,8 +50,8 @@ public class Main {
 
         }
 
-        catch () {
-
+        catch (IOException e) {
+            System.err.println("Erreur de lecture du fichier : " + e.getMessage());
         }
     }
 }
