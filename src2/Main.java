@@ -3,6 +3,7 @@ package src2;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -25,8 +26,10 @@ public class Main {
 
             List<String> listeLignes = Files.readAllLines(Paths.get(filename));
             String[] tabLignes = listeLignes.toArray(new String[0]);
+            List<String[]> tousLesElements = new ArrayList<>();
             for(String ligne : tabLignes){
-                String[] elements = ligne.split("\\s+");
+                String[] elementsLigne = ligne.split("\\s+");
+                tousLesElements.add(elementsLigne);
             }
 
             //étape 2 : création tree2D ( nom origine ) avec les parametress de w et de h donné en entrée
