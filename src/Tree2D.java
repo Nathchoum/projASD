@@ -10,7 +10,6 @@ import java.io.IOException;
 public class Tree2D {
     private Tree2D g;
     private Tree2D d;
-    private boolean feuille;
     private Color couleur;
     private int x;
     private int y;
@@ -83,22 +82,22 @@ public class Tree2D {
      *
      * @param type
      */
-    public void Coupure(String type){
+    public void chooseDivision(String type){
         if(type.equals("A")){
-            if(((w/h)>2) || ((h/w) <= 2)){ // Cas coupure sur X
+            if(((w/h)>2) || ((h/w) <= 2)){ // Cas chooseDivision sur X
                 Tree2D Gauche = new Tree2D(w/2, h, x, y, this);               // Attention à voir ce que ça donne si x, y impair
                 Tree2D Droit = new Tree2D(w/2, h, x+w/2 , y, this);    // Attention à voir ce que ça donne si x, y impair
                 this.setG(Gauche);
                 this.setD(Droit);
             }
-            else{ // Coupure sur Y
+            else{ // chooseDivision sur Y
                 Tree2D Gauche = new Tree2D(w, h/2 , x, y, this);               // Attention à voir ce que ça donne si x, y impair
                 Tree2D Droit = new Tree2D(w, h/2, x , y+h/2, this);    // Attention à voir ce que ça donne si x, y impair
                 this.setG(Gauche);
                 this.setD(Droit);
             }
         } else if (type.equals("B")) {
-            if((w/h)>1){ // Cas coupure sur X
+            if((w/h)>1){ // Cas chooseDivision sur X
                 Tree2D Gauche = new Tree2D(w/2, h, x, y, this);               // Attention à voir ce que ça donne si x, y impair
                 Tree2D Droit = new Tree2D(w/2, h, x+w/2 , y, this);    // Attention à voir ce que ça donne si x, y impair
                 this.setG(Gauche);
@@ -112,43 +111,66 @@ public class Tree2D {
             }
         }
         else{ // Entrée du type incorrect
-            System.out.println("Le type de coupure est incorrect.");
+            System.out.println("Le type de chooseDivision est incorrect.");
         }
     }
-
-    //TODO Rechercher pour trouver le noeud à couper
-
-    //TODO GenererImage qui va générer l'image resultat à partir du 2D Arbre complet
-
     /**
      * Procédure qui parcourt l'arbre à la recherche de nœud sans fils. Si un nœud est sans fils, on remonte à son parent et on crée une nouvelle feuille.
      */
-    public void NoeudToFeuille(){
+    public void toImage(Image image){
          if (this.getG() == null && this.getD() == null){
              /*
              si la feuille est à gauche de son prédécesseur
               */
              if (this.equals(this.getPredecesseur().getG())) {
                  this.getPredecesseur().getG() = new Tree2D(x, y, w, h, chooseColor, this.getPredecesseur());  //on aura une fonction dans le main qui va permettre de savoir la couleur
+                 // Création du rectangle sur fils gauche
+                 // Variables
+                 int startX = this.getPredecesseur().getG().getX();
+                 int startY = this.getPredecesseur().getG().getY();
+                 int endX = this.getPredecesseur().getG().getX() + this.getPredecesseur().getG().getW();
+                 int endY = this.getPredecesseur().getG().getY() + this.getPredecesseur().getG().getH();
+                 Color color = this.getPredecesseur().getG().getCouleur();
+                 // Création
+                 image.setRectangle(
+                         startX,
+                         endX,
+                         startY,
+                         endY,
+                         color);
              }
              /*
              si la feuille est à droite de son prédécesseur
               */
              else {
                  this.getPredecesseur().getD() = new Tree2D(x, y, w, h, chooseColor, this.getPredecesseur());  //on aura une fonction dans le main qui va permettre de savoir la couleur
+                 // Création du rectangle sur fils droit
+                 // Variables
+                 int startX = this.getPredecesseur().getD().getX();
+                 int startY = this.getPredecesseur().getD().getY();
+                 int endX = this.getPredecesseur().getD().getX() + this.getPredecesseur().getD().getW();
+                 int endY = this.getPredecesseur().getD().getY() + this.getPredecesseur().getD().getH();
+                 Color color = this.getPredecesseur().getD().getCouleur();
+                 // Création
+                 image.setRectangle(
+                         startX,
+                         endX,
+                         startY,
+                         endY,
+                         color);
              }
          }
          if(!(this.getG() == null)){
-             this.getG().NoeudToFeuille();
+             this.getG().toImage(image);
          }
          if(!(this.getD() == null)){
-             this.getD().NoeudToFeuille();
+             this.getD().toImage(image);
          }
 
     }
 
     /**
-     * Fonction sauvegardant le Tree2D dans un fichier texte.
+     * Fonction sauvegardant le Tree2D dans un fichier texte. En parcour largeur.
      */
     public void sauvegarde(String fileName){
         // Variables :
@@ -164,7 +186,7 @@ public class Tree2D {
             while(!(Q.isEmpty())){
                 s = Q.poll(); // Retourne le premier element de la File et le retire.
                 noeud = s.noeud2String();
-                writer.write(noeud + System.lineSeparator());
+                writer.write(compteur + " " + noeud + System.lineSeparator());
                 compteur = compteur + 1;
                 if(!(this.getG() == null)){
                     Q.add(this.getG());
@@ -230,10 +252,6 @@ public class Tree2D {
 
     public void setCouleur(Color couleur) {
         this.couleur = couleur;
-    }
-
-    public void setFeuille(boolean feuille) {
-        this.feuille = feuille;
     }
 
     public void setG(Tree2D g) {

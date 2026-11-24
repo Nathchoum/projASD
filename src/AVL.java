@@ -32,6 +32,8 @@ public class AVL {
         this.bal = 0;
     }
 
+    public AVL(){}
+
     /**
      * GETTER
      */
@@ -283,15 +285,26 @@ public class AVL {
      * Fonction permettant de supprimer le maximum d'un AVL et renvoie l'arbre après suppression
      * @return
      */
-    public AVL supprimer_max(){
-        if(this.getD().estVide()){
-            return this.getG(); // On renvoie this.G car le max est le poid de la racine, en le supprimant on à juste a renvoyer this.G
-        }
-        else{
-            this.setD(this.getD().supprimer_max()); // Sinon, on appelle la fonction sur son fils droit. Si son fils droit n'a pas de fils droit alors c'est lui le max et dans ce cas on renvoie le fils gauche. S'il a un fils gauche, on remplace le fils droit par le gauche et sinon il sera = à NULL
-            // Mise à jour des balances de l'arbre
+    public Tree2D chooseFeuille(){
+        if(this.getD().estVide() && (!(this.getG().estVide()))){
+            Tree2D result = this.getOrigine();
+            this.setPoids(this.getG().getPoids());
+            this.setOrigine(this.getG().getOrigine());
             this.equilibre();
-            return this;
+            return result;
+        } else if (this.getD().getD().estVide() && this.getD().getG().estVide()) {
+            Tree2D result = this.getD().getOrigine();
+            this.setD(null);
+            this.equilibre();
+            return result;
+        } else if (!(this.getD().getG().estVide())) {
+            Tree2D result = this.getD().getOrigine();
+            this.setD(this.getD().getG());
+            this.equilibre();
+            return result;
+        }
+        else {
+           return this.getD().chooseFeuille();
         }
     }
 
