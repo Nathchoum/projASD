@@ -1,6 +1,5 @@
 package src;
 
-import  java.lang.Math.*; // Fonction abs() pour la valeur absolue
 
 public class AVL {
     private int bal;
@@ -152,22 +151,23 @@ public class AVL {
      * @param p Le poid
      * @return AVL
      */
-    public AVL ajouter(double p) {
+    public AVL ajouter(double p, Tree2D origine) {
         if (this.estVide()) {
             // Mise à jour de l'AVL en un AVL avec seulement une racine
             this.setPoids(p);
             this.setBal(0);
             this.setD(null);
             this.setG(null);
+            this.setOrigine(origine);
             return this;
-        } else {
+        } else { // Si c'est le même noeud
             if (this.getPoids() == p) {
                 return this;
             } else {
                 if (this.getPoids() < p) {
-                    this.getD().ajouter(p);
+                    this.getD().ajouter(p,origine);
                 } else {
-                    this.getG().ajouter(p);
+                    this.getG().ajouter(p,origine);
                 }
             }
             // Mise à jour de l'AVL pour respecter les conditions de ce dernier
@@ -286,26 +286,32 @@ public class AVL {
      * @return
      */
     public Tree2D chooseFeuille(){
-        if(this.getD().estVide() && (!(this.getG().estVide()))){
-            Tree2D result = this.getOrigine();
-            this.setPoids(this.getG().getPoids());
-            this.setOrigine(this.getG().getOrigine());
-            this.equilibre();
-            return result;
-        } else if (this.getD().getD().estVide() && this.getD().getG().estVide()) {
-            Tree2D result = this.getD().getOrigine();
-            this.setD(null);
-            this.equilibre();
-            return result;
-        } else if (!(this.getD().getG().estVide())) {
-            Tree2D result = this.getD().getOrigine();
-            this.setD(this.getD().getG());
-            this.equilibre();
-            return result;
+
+        if(!(this.estVide())){
+
+            if(this.getD().estVide() && (!(this.getG().estVide()))){ // Fils gauche pas vide, fils droit vide. MAX = Racine
+                Tree2D result = this.getOrigine(); // On save l'otigine poiuyr la renvoyer.
+                // Suppression du noued dans l'AVL
+                this.setPoids(this.getG().getPoids());
+                this.setOrigine(this.getG().getOrigine());
+                this.equilibre();
+                return result;
+            } else if (this.getD().getD().estVide() && this.getD().getG().estVide()) {
+                Tree2D result = this.getD().getOrigine();
+                this.setD(null);
+                this.equilibre();
+                return result;
+            } else if (!(this.getD().getG().estVide())) {
+                Tree2D result = this.getD().getOrigine();
+                this.setD(this.getD().getG());
+                this.equilibre();
+                return result;
+            }
+            else {
+                return this.getD().chooseFeuille();
+            }
         }
-        else {
-           return this.getD().chooseFeuille();
-        }
+        return null;
     }
 
     /**
@@ -329,5 +335,5 @@ public class AVL {
         }
         return null;
     }
-    
+
 }
