@@ -94,6 +94,36 @@ public class Tree2D {
             }
     }
 
+    public Color chooseColor(String lettre){
+        if (lettre.equals("r")){
+            Color red = new Color(255, 0,0);
+            return red;
+        }
+        if (lettre.equals("n")){
+            Color noir = new Color(0, 0,0);
+            return noir;
+        }
+        if (lettre.equals("w")){
+            Color blanc = new Color(255, 255,255);
+            return blanc;
+        }
+        if (lettre.equals("j")){
+            Color jaune = new Color(255, 255,0);
+            return jaune;
+        }
+        if (lettre.equals("b")){
+            Color bleu = new Color(0, 0,255);
+            return bleu;
+        }
+        if (lettre.equals("m")){
+            return this.couleur;
+        }
+        else {
+            System.out.println("ah non, tu t'es trompé");
+            return null;
+        }
+    }
+
     /**
      *Getters
      */
