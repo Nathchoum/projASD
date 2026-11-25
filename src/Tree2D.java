@@ -15,11 +15,11 @@ public class Tree2D {
 
     /**
      * Constructeur du nœud racine
-     * @param weight
+     * @param width
      * @param height
      */
-    public Tree2D (int weight, int height){
-        this.w = weight;
+    public Tree2D (int width, int height){
+        this.w = width;
         this.h = height;
         this.x = 0;
         this.y = 0;
@@ -51,52 +51,6 @@ public class Tree2D {
         return ( (w * h) / denominateur);
     }
 
-    /**
-     *
-     * @param prctX
-     * @param prctY
-     * @param couleurG
-     * @param couleurD
-     */
-    public void chooseDivisionA(float prctX, float prctY, Color couleurG, Color couleurD) {
-        int coX = (int)(prctX * w);
-        int coY = (int)(prctY * h);
-        if (((w / h) > 2) || ((h / w) <= 2)) { // Cas chooseDivision sur X
-            Tree2D Gauche = new Tree2D(x, y, coX, h, couleurG );
-            Tree2D Droit = new Tree2D(x + coX, y,w-coX, h, couleurD);
-            this.setG(Gauche);
-            this.setD(Droit);
-        } else { // chooseDivision sur Y
-            Tree2D Gauche = new Tree2D(x, y, w, coY, couleurG );
-            Tree2D Droit = new Tree2D(x, y +coY,w, h-coY, couleurD);
-            this.setG(Gauche);
-            this.setD(Droit);
-        }
-    }
-
-    /**
-     *
-     * @param prctX
-     * @param prctY
-     * @param couleurG
-     * @param couleurD
-     */
-    public void chooseDivisionB(float prctX, float prctY, Color couleurG, Color couleurD) {
-        int coX = (int)(prctX * w);
-        int coY = (int)(prctY * h);
-            if((w/h)>1){ // Cas chooseDivision sur X
-                Tree2D Gauche = new Tree2D(x, y, coX, h, couleurG );
-                Tree2D Droit = new Tree2D(x + coX, y,w-coX, h, couleurD);
-                this.setG(Gauche);
-                this.setD(Droit);
-            }
-            else{
-                Tree2D Gauche = new Tree2D(x, y, w, coY, couleurG );
-                Tree2D Droit = new Tree2D(x, y +coY,w, h-coY, couleurD);
-                this.setG(Gauche);
-                this.setD(Droit);
-            }
-    }
 
     public Color chooseColor(String lettre){
         if (lettre.equals("r")){
@@ -123,11 +77,11 @@ public class Tree2D {
             return this.couleur;
         }
         else {
-            System.out.println("ah non, tu t'es trompé");
+            System.out.println("ah non, tu t'es trompé...");
             return null;
         }
     }
-
+/*
     public void toImage(Image image){
         // parcours l'arbre final
         Queue<Tree2D> Q = new LinkedList<Tree2D>();
@@ -137,7 +91,7 @@ public class Tree2D {
         Q.add(this);
         while(!(Q.isEmpty())){
             s = Q.poll(); // Retourne le premier element de la File et le retire.
-            // Action sur le noeud
+
             int startX = this.getX();
             int startY = this.getY();
             int endX = this.getX() + this.getW();
@@ -159,8 +113,37 @@ public class Tree2D {
         catch (IOException e) {
             System.err.println("Impossible de générer l'image. " + e.getMessage());
         }
+    }
+*/
+    public boolean estFeuille(){
+        return (this.getG()==null && this.getD()==null);
+    }
 
 
+    public void toImage(Image image){
+
+        if(this.estFeuille()) {
+            int startX = this.getX();
+            int startY = this.getY();
+            int endX = this.getX() + this.getW();
+            int endY = this.getY() + this.getH();
+
+            image.setRectangle(startX, endX, startY, endY, this.couleur);
+
+        }
+
+        else{
+            this.getG().toImage(image);
+            this.getD().toImage(image);
+        }
+
+        try{
+            image.save("Michel.png");
+        }
+
+        catch (IOException e) {
+            System.err.println("Impossible de générer l'image. " + e.getMessage());
+        }
     }
 
     /**

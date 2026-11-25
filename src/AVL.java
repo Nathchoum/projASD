@@ -18,20 +18,15 @@ public class AVL {
         poids = p;
         this.origine = origine;
         bal = 0;
+        this.G = new AVL();
+        this.D = new AVL();
     }
 
-
-    /**
-     * Constructeur noeud AVL
-     *
-     * @param poids le poid
-     */
-    public AVL(double poids) {
-        this.poids = poids;
-        this.bal = 0;
+    public AVL(){
+        poids=-1;
+        bal = 0;
     }
 
-    public AVL(){}
 
     /**
      * GETTER
@@ -89,11 +84,7 @@ public class AVL {
      * @return boolean
      */
     public boolean estVide() {
-        if (this.getPoids() == -1 || this.getG() == null || this.getD() == null) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.getPoids() == -1;
     }
 
     /**
@@ -102,7 +93,7 @@ public class AVL {
      * @return boolean
      */
     public boolean estFeuille() {
-        if (this.getPoids() > -1 || this.getG() == null || this.getD() == null) {
+        if (this.getPoids() > -1 || this.getG().estVide() || this.getD().estVide()) {
             return true;
         }
         return false;
@@ -156,20 +147,17 @@ public class AVL {
             // Mise à jour de l'AVL en un AVL avec seulement une racine
             this.setPoids(p);
             this.setBal(0);
-            this.setD(null);
-            this.setG(null);
+            this.setD(new AVL());
+            this.setG(new AVL());
             this.setOrigine(origine);
             return this;
-        } else { // Si c'est le même noeud
-            if (this.getPoids() == p) {
-                return this;
+        } else {
+            if (this.getPoids() < p) {
+                this.getD().ajouter(p,origine);
             } else {
-                if (this.getPoids() < p) {
-                    this.getD().ajouter(p,origine);
-                } else {
-                    this.getG().ajouter(p,origine);
-                }
+                this.getG().ajouter(p,origine);
             }
+        }
             // Mise à jour de l'AVL pour respecter les conditions de ce dernier
             AVL newAvl = this.equilibre();
             this.setPoids(newAvl.getPoids());
@@ -178,7 +166,6 @@ public class AVL {
             this.setG(newAvl.getG());
             this.setOrigine(newAvl.getOrigine());
             return this;
-        }
     }
 
     /**
@@ -285,32 +272,39 @@ public class AVL {
      * Fonction permettant de supprimer le maximum d'un AVL et renvoie l'arbre après suppression
      * @return
      */
-    public Tree2D chooseFeuille(){
+    public Tree2D chooseFeuille(int min){
 
         if(!(this.estVide())){
 
-            if(this.getD().estVide() && (!(this.getG().estVide()))){ // Fils gauche pas vide, fils droit vide. MAX = Racine
-                Tree2D result = this.getOrigine(); // On save l'otigine poiuyr la renvoyer.
-                // Suppression du noued dans l'AVL
-                this.setPoids(this.getG().getPoids());
-                this.setOrigine(this.getG().getOrigine());
-                this.equilibre();
-                return result;
-            } else if (this.getD().getD().estVide() && this.getD().getG().estVide()) {
-                Tree2D result = this.getD().getOrigine();
-                this.setD(null);
-                this.equilibre();
-                return result;
-            } else if (!(this.getD().getG().estVide())) {
-                Tree2D result = this.getD().getOrigine();
-                this.setD(this.getD().getG());
-                this.equilibre();
-                return result;
+            if(this.estFeuille()) {
+                Tree2D res = this.origine;
+                this.poids = -1;
+                if (res.getW()>=min && res.getH()>=min){
+                    return res;
+                }
+                return null;
             }
+
+            if(this.getG().estVide()) { // Fils gauche pas vide, fils droit vide. MAX = Racine
+                return this.getD().chooseFeuille(min);
+            }
+
             else {
-                return this.getD().chooseFeuille();
+                Tree2D res = this.getD().chooseFeuille(min);
+                if (res.CalculPoids() == this.getPoids()){
+                    if (this.origine.getX()< res.getX()) {
+                        res = this.origine;
+                        this.poids = this.getG().getPoids();
+                        this.setG(this.getG().getG());
+                        this.equilibre();
+                        if (res.getW() >= min && res.getH() >= min) {
+                            return res;
+                        }
+                        return null;
+                    }
+                    }
+                }
             }
-        }
         return null;
     }
 
