@@ -6,12 +6,11 @@ public class AVL {
     private double poids = -1;
     private AVL G;
     private AVL D;
-    private Tree2D origine;
+    private Tree2D origine; //noeud venant du tree2d
 
     /**
      * Constructeur sommet AVL
-     *
-     * @param p       le poid
+     * @param p       le poids
      * @param origine l'arbre 2D auquel il fait référence
      */
     public AVL(double p, Tree2D origine) {
@@ -22,65 +21,16 @@ public class AVL {
         this.D = new AVL();
     }
 
+    /**
+     * Constructeur d'un noeud vide
+     */
     public AVL() {
         poids = -1;
         bal = 0;
     }
 
-
-    /**
-     * GETTER
-     */
-
-    public double getPoids() {
-        return poids;
-    }
-
-    public AVL getD() {
-        return D;
-    }
-
-    public AVL getG() {
-        return G;
-    }
-
-    public Tree2D getOrigine() {
-        return origine;
-    }
-
-    public int getBal() {
-        return bal;
-    }
-
-
-    /**
-     * SETTER
-     */
-
-    public void setPoids(double p) {
-        this.poids = p;
-    }
-
-    public void setG(AVL g) {
-        this.G = g;
-    }
-
-    public void setD(AVL d) {
-        D = d;
-    }
-
-    public void setOrigine(Tree2D origine) {
-        this.origine = origine;
-    }
-
-    public void setBal(int bal) {
-        this.bal = bal;
-    }
-
-
     /**
      * Fonction permettant de retourner si l'AVL est vide ou pas.
-     *
      * @return boolean
      */
     public boolean estVide() {
@@ -92,7 +42,7 @@ public class AVL {
      *
      * @return boolean
      */
-    public boolean estFeuille() { // Ce n'est pas des || mais des &&
+    public boolean estFeuille() {
         if (this.getPoids() > -1 && this.getG().estVide() && this.getD().estVide()) {
             return true;
         }
@@ -128,7 +78,7 @@ public class AVL {
             if (this.estFeuille()) {
                 this.setBal(0);
             } else {
-                this.setBal(this.getD().hauteur() - this.getG().hauteur()); // Maths.abs() retire le signe un -2 devient un +2
+                this.setBal(this.getD().hauteur() - this.getG().hauteur());
                 this.getG().majBalance();
                 this.getD().majBalance();
             }
@@ -137,9 +87,9 @@ public class AVL {
     }
 
     /**
-     * Fonction permettant d'ajouter un double à un AVL, cette fonction appellera majBalance() et  Equilibrer() pour garder les proprièté de l'AVL
+     * Fonction permettant d'ajouter un double à un AVL, cette fonction appellera majBalance() et Equilibrer() pour garder les propriétés de l'AVL
      *
-     * @param p Le poid
+     * @param p Le poids
      * @return AVL
      */
     public AVL ajouter(double p, Tree2D origine) {
@@ -152,8 +102,8 @@ public class AVL {
             this.setG(new AVL());
             return this;
 
-        } else { // N'est pas vide
-            // la nouvelle feuille passe avant la racine si ( son poids est plus grand, son poid est égale mais son X plus petit ou poids et X égaux mais Y plus petit
+        } else {
+            // la nouvelle feuille passe avant la racine si : son poids est plus grand, son poids est égale et son X plus petit ou poids et X égaux et Y plus petit
             if (this.getPoids() < p || ((this.getPoids() == p) && (origine.getX() < this.getOrigine().getX())) || ((this.getPoids() == p) && (origine.getX() == this.getOrigine().getX()) && (origine.getY() < this.getOrigine().getY()))) {
                 this.setD(this.getD().ajouter(p, origine));
             } else {
@@ -218,7 +168,7 @@ public class AVL {
      *
      * @return AVL
      */
-    public AVL rotationGaucheDroite() {
+    public AVL doubleRotationDroite() {
         if (this.G == null) {
             return this;
         }
@@ -231,7 +181,7 @@ public class AVL {
      *
      * @return AVL
      */
-    public AVL rotationDroiteGauche() {
+    public AVL doubleRotationGauche() {
         if (this.D == null) {
             return this;
         }
@@ -250,14 +200,14 @@ public class AVL {
             if (this.getD().getBal() >= 0) {
                 return this.rotationGauche();
             } else {
-                return this.rotationDroiteGauche();
+                return this.doubleRotationGauche();
             }
         } else {
             if (this.getBal() == -2) {
                 if (this.getG().getBal() <= 0) {
                     return this.rotationDroite();
                 } else {
-                    return this.rotationGaucheDroite();
+                    return this.doubleRotationDroite();
                 }
             }
             return this;
@@ -302,5 +252,55 @@ public class AVL {
         } else {
             return null;
         }
+    }
+
+
+    /**
+     * GETTER
+     */
+
+    public double getPoids() {
+        return poids;
+    }
+
+    public AVL getD() {
+        return D;
+    }
+
+    public AVL getG() {
+        return G;
+    }
+
+    public Tree2D getOrigine() {
+        return origine;
+    }
+
+    public int getBal() {
+        return bal;
+    }
+
+
+    /**
+     * SETTER
+     */
+
+    public void setPoids(double p) {
+        this.poids = p;
+    }
+
+    public void setG(AVL g) {
+        this.G = g;
+    }
+
+    public void setD(AVL d) {
+        D = d;
+    }
+
+    public void setOrigine(Tree2D origine) {
+        this.origine = origine;
+    }
+
+    public void setBal(int bal) {
+        this.bal = bal;
     }
 }
