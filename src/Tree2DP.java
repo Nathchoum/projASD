@@ -46,7 +46,7 @@ public class Tree2DP {
     }
 
     /**
-     *Permet de calculer le poids d'un nœud, afin de l'envoyer dans l'avl
+     *Permet de calculer le poids d'un nœud
      * @return le poids d'un nœud
      */
     public double CalculPoids(){
@@ -55,6 +55,11 @@ public class Tree2DP {
     }
 
 
+    /**
+     * Permet de choisir la couleur d'un noeud en fonction de la lettre donnée dans le fichier d'entrée
+     * @param lettre donné dans le fichier d'entrée
+     * @return la couleur à appliquer au noeud
+     */
     public Color chooseColor(String lettre){
         if (lettre.equals("r")){
             Color red = new Color(255, 0,0);
@@ -85,11 +90,19 @@ public class Tree2DP {
         }
     }
 
+    /**
+     * Vérifie si le noeud est une feuille ou non
+     * @return un boolean
+     */
     public boolean estFeuille(){
         return (this.getG()==null && this.getD()==null);
     }
 
-
+    /**
+     * Parcoure l'arbre pour peindre les rectangles et les lignes sur l'image
+     * @param image, une image vierge créée dans le Main
+     * @param largeurLigne
+     */
     public void toImage(Image image, int largeurLigne){
 
         if(this.estFeuille()) {
@@ -115,9 +128,15 @@ public class Tree2DP {
         }
     }
 
-    public void chooseDivision(char variante, int ligne, List<String[]> pablo) {
-        int coX = this.getX() + (int)Math.floor(this.getW()*Float.parseFloat(pablo.get(ligne)[1]));
-        int coY = this.getY() + (int)Math.floor(this.getH()*Float.parseFloat(pablo.get(ligne)[2]));
+    /**
+     * Choisis l'axe sur lequel le noeud sera découpé et créé les fils résultants de cette divisoion
+     * @param variante, A ou B en fonction du paramètre donné dans la commande
+     * @param ligne, ligne de découpe du fichier d'entrée
+     * @param tableau, tableau contenant toutes les lignes du fichier d'entrée
+     */
+    public void chooseDivision(char variante, int ligne, List<String[]> tableau) {
+        int coX = this.getX() + (int)Math.floor(this.getW()*Float.parseFloat(tableau.get(ligne)[1]));
+        int coY = this.getY() + (int)Math.floor(this.getH()*Float.parseFloat(tableau.get(ligne)[2]));
         // Problème de calcul si on ne fait pas les divisions en double.
         if(variante == 'A'){
             if((double)this.getW() / (double)this.getH() > 0.5 || (double)this.getH()/ (double)this.getW() <= 2){
@@ -125,16 +144,16 @@ public class Tree2DP {
                 this.setAxeDeDecoupe('X');
                 this.setCoordDeDecoupe(coX);
 
-                this.setG(new Tree2DP(this.getX(), this.getY(), coX- this.getX(), this.getH(), this.chooseColor(pablo.get(ligne)[3])));
-                this.setD(new Tree2DP(coX, this.getY(),  this.getW()-coX+ this.getX(), this.getH(), this.chooseColor(pablo.get(ligne)[4])));
+                this.setG(new Tree2DP(this.getX(), this.getY(), coX- this.getX(), this.getH(), this.chooseColor(tableau.get(ligne)[3])));
+                this.setD(new Tree2DP(coX, this.getY(),  this.getW()-coX+ this.getX(), this.getH(), this.chooseColor(tableau.get(ligne)[4])));
             }
             else {
                 // On set les attributs de découpe sur les noeuds pour pouvoir tracer les traîts
                 this.setAxeDeDecoupe('Y');
                 this.setCoordDeDecoupe(coY);
 
-                this.setG(new Tree2DP(this.getX(), this.getY(), this.getW(), coY - this.getY(), this.chooseColor(pablo.get(ligne)[3])));
-                this.setD(new Tree2DP(this.getX(), coY, this.getW(), this.getH()-coY + this.getY() ,this.chooseColor(pablo.get(ligne)[4])));
+                this.setG(new Tree2DP(this.getX(), this.getY(), this.getW(), coY - this.getY(), this.chooseColor(tableau.get(ligne)[3])));
+                this.setD(new Tree2DP(this.getX(), coY, this.getW(), this.getH()-coY + this.getY() ,this.chooseColor(tableau.get(ligne)[4])));
             }
         }
         else{
@@ -143,16 +162,16 @@ public class Tree2DP {
                 this.setAxeDeDecoupe('X');
                 this.setCoordDeDecoupe(coX);
 
-                this.setG(new Tree2DP(this.getX(), this.getY(), coX- this.getX(), this.getH(), this.chooseColor(pablo.get(ligne)[3])));
-                this.setD(new Tree2DP(coX, this.getY(),  this.getW()-coX+ this.getX(), this.getH(), this.chooseColor(pablo.get(ligne)[4])));
+                this.setG(new Tree2DP(this.getX(), this.getY(), coX- this.getX(), this.getH(), this.chooseColor(tableau.get(ligne)[3])));
+                this.setD(new Tree2DP(coX, this.getY(),  this.getW()-coX+ this.getX(), this.getH(), this.chooseColor(tableau.get(ligne)[4])));
             }
             else { // Axe Y
                 // On set les attributs de découpe sur les noeuds pour pouvoir tracer les traîts
                 this.setAxeDeDecoupe('Y');
                 this.setCoordDeDecoupe(coY);
 
-                this.setG(new Tree2DP(this.getX(), this.getY(), this.getW(), coY - this.getY(), this.chooseColor(pablo.get(ligne)[3])));
-                this.setD(new Tree2DP(this.getX(), coY, this.getW(), this.getH()-coY + this.getY() ,this.chooseColor(pablo.get(ligne)[4])));
+                this.setG(new Tree2DP(this.getX(), this.getY(), this.getW(), coY - this.getY(), this.chooseColor(tableau.get(ligne)[3])));
+                this.setD(new Tree2DP(this.getX(), coY, this.getW(), this.getH()-coY + this.getY() ,this.chooseColor(tableau.get(ligne)[4])));
             }
         }
 
@@ -199,6 +218,7 @@ public class Tree2DP {
     public double getPoids() {
         return poids;
     }
+
 
     /**
      *Setters
