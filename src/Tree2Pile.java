@@ -6,12 +6,19 @@ import java.util.Stack;
 public class Tree2Pile {
     Stack<Tree2DP> pile;
 
+    /**
+     * Constructeur permettant de créer une pile vide
+     */
     public Tree2Pile(){
         this.pile = new Stack<Tree2DP>();
     }
 
 
-    // ajouter
+    /**
+     * Méthode permettant d'ajouter un noeud dans la pile, celle-ci vérifie qu'en cas de poids égal :
+     * on vérifie que les coordonnées x et y du noeud sont inférieurs à celles du noeud du haut de la pile,dans ce cas on l'ajoute au-dessus de la pile, sinon le noeud sera ajouter en dessous
+     * @param noeud, noeud que l'on souhaite ajoute dans la pile
+     */
     public void ajouter(Tree2DP noeud){
         //
         if(this.pile.empty()){
@@ -37,7 +44,11 @@ public class Tree2Pile {
         }
     }
 
-    // chooseFeuille()
+    /**
+     * Méthode permettant de choisir la feuille avec le plus grand poids et que ses dimensions soient supérieurs aux dimensions minimales de découpe
+     * @param min, correspond aux dimensions minimales de découpe
+     * @return le noeud à découper
+     */
     public Tree2DP chooseFeuille(int min) {
         Tree2DP Max = this.pile.peek();
         if (Max.getW() >= min && Max.getH() >= min) {
