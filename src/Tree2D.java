@@ -3,6 +3,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.List;
 
 public class Tree2D {
     private Tree2D g;
@@ -12,6 +13,8 @@ public class Tree2D {
     private int y;
     private int w;
     private int h;
+    private char axeDeDecoupe;
+    private int coordDeDecoupe;
 
     /**
      * Constructeur du nœud racine
@@ -81,46 +84,13 @@ public class Tree2D {
             return null;
         }
     }
-/*
-    public void toImage(Image image){
-        // parcours l'arbre final
-        Queue<Tree2D> Q = new LinkedList<Tree2D>();
-        Tree2D s;
-        // ------------
 
-        Q.add(this);
-        while(!(Q.isEmpty())){
-            s = Q.poll(); // Retourne le premier element de la File et le retire.
-
-            int startX = this.getX();
-            int startY = this.getY();
-            int endX = this.getX() + this.getW();
-            int endY = this.getY() + this.getH();
-
-            image.setRectangle(startX,endX,startY,endY,this.couleur);
-
-
-            if(!(this.getG() == null)){
-                Q.add(this.getG());
-            }
-            if(!(this.getD() == null)){
-                Q.add(this.getD());
-            }
-        }
-        try{
-            image.save("Michel");
-        }
-        catch (IOException e) {
-            System.err.println("Impossible de générer l'image. " + e.getMessage());
-        }
-    }
-*/
     public boolean estFeuille(){
         return (this.getG()==null && this.getD()==null);
     }
 
 
-    public void toImage(Image image){
+    public void toImage(Image image, int largeurLigne){
 
         if(this.estFeuille()) {
             int startX = this.getX();
@@ -131,19 +101,61 @@ public class Tree2D {
             image.setRectangle(startX, endX, startY, endY, this.couleur);
 
         }
-
         else{
-            this.getG().toImage(image);
-            this.getD().toImage(image);
+            this.getG().toImage(image, largeurLigne);
+            this.getD().toImage(image, largeurLigne);
+
+            // Création des lignes
+            if(this.getAxeDeDecoupe() == 'X'){
+                image.setRectangle(this.getCoordDeDecoupe() - (largeurLigne/2) , this.getCoordDeDecoupe() - (largeurLigne/2) + largeurLigne, this.getY(), this.getY() + this.getH(), Color.BLACK );
+            }
+            else{
+                image.setRectangle(this.getX(), this.getX() + this.getW(), this.getCoordDeDecoupe() - (largeurLigne/2), this.getCoordDeDecoupe() - (largeurLigne/2) + largeurLigne, Color.BLACK );
+            }
+        }
+    }
+
+    public void chooseDivision(char variante, int ligne, List<String[]> pablo) {
+        int coX = this.getX() + (int)Math.floor(this.getW()*Float.parseFloat(pablo.get(ligne)[1]));
+        int coY = this.getY() + (int)Math.floor(this.getH()*Float.parseFloat(pablo.get(ligne)[2]));
+        // Problème de calcul si on ne fait pas les divisions en double.
+        if(variante == 'A'){
+            if((double)this.getW() / (double)this.getH() > 0.5 || (double)this.getH()/ (double)this.getW() <= 2){
+                // On set les attributs de découpe sur les noeuds pour pouvoir tracer les traîts
+                this.setAxeDeDecoupe('X');
+                this.setCoordDeDecoupe(coX);
+
+                this.setG(new Tree2D(this.getX(), this.getY(), coX- this.getX(), this.getH(), this.chooseColor(pablo.get(ligne)[3])));
+                this.setD(new Tree2D(coX, this.getY(),  this.getW()-coX+ this.getX(), this.getH(), this.chooseColor(pablo.get(ligne)[4])));
+            }
+            else {
+                // On set les attributs de découpe sur les noeuds pour pouvoir tracer les traîts
+                this.setAxeDeDecoupe('Y');
+                this.setCoordDeDecoupe(coY);
+
+                this.setG(new Tree2D(this.getX(), this.getY(), this.getW(), coY - this.getY(), this.chooseColor(pablo.get(ligne)[3])));
+                this.setD(new Tree2D(this.getX(), coY, this.getW(), this.getH()-coY + this.getY() ,this.chooseColor(pablo.get(ligne)[4])));
+            }
+        }
+        else{
+            if((double)this.getW() / (double)this.getH() > 1 ){ // Axe X
+                // On set les attributs de découpe sur les noeuds pour pouvoir tracer les traîts
+                this.setAxeDeDecoupe('X');
+                this.setCoordDeDecoupe(coX);
+
+                this.setG(new Tree2D(this.getX(), this.getY(), coX- this.getX(), this.getH(), this.chooseColor(pablo.get(ligne)[3])));
+                this.setD(new Tree2D(coX, this.getY(),  this.getW()-coX+ this.getX(), this.getH(), this.chooseColor(pablo.get(ligne)[4])));
+            }
+            else { // Axe Y
+                // On set les attributs de découpe sur les noeuds pour pouvoir tracer les traîts
+                this.setAxeDeDecoupe('Y');
+                this.setCoordDeDecoupe(coY);
+
+                this.setG(new Tree2D(this.getX(), this.getY(), this.getW(), coY - this.getY(), this.chooseColor(pablo.get(ligne)[3])));
+                this.setD(new Tree2D(this.getX(), coY, this.getW(), this.getH()-coY + this.getY() ,this.chooseColor(pablo.get(ligne)[4])));
+            }
         }
 
-        try{
-            image.save("Michel.png");
-        }
-
-        catch (IOException e) {
-            System.err.println("Impossible de générer l'image. " + e.getMessage());
-        }
     }
 
     /**
@@ -178,6 +190,11 @@ public class Tree2D {
         return g;
     }
 
+    public char getAxeDeDecoupe() { return this.axeDeDecoupe;}
+
+    public int getCoordDeDecoupe() {
+        return coordDeDecoupe;
+    }
 
     /**
      *Setters
@@ -209,5 +226,13 @@ public class Tree2D {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public void setAxeDeDecoupe(char axeDeDecoupe) {
+        this.axeDeDecoupe = axeDeDecoupe;
+    }
+
+    public void setCoordDeDecoupe(int coordDeDecoupe) {
+        this.coordDeDecoupe = coordDeDecoupe;
     }
 }
