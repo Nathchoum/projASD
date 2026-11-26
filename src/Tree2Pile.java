@@ -17,6 +17,7 @@ public class Tree2Pile {
     /**
      * Méthode permettant d'ajouter un noeud dans la pile, celle-ci vérifie qu'en cas de poids égal :
      * on vérifie que les coordonnées x et y du noeud sont inférieurs à celles du noeud du haut de la pile,dans ce cas on l'ajoute au-dessus de la pile, sinon le noeud sera ajouter en dessous
+     * Commplexité : O(n) avec le nombre de noeuds
      * @param noeud, noeud que l'on souhaite ajoute dans la pile
      */
     public void ajouter(Tree2DP noeud){
@@ -46,6 +47,7 @@ public class Tree2Pile {
 
     /**
      * Méthode permettant de choisir la feuille avec le plus grand poids et que ses dimensions soient supérieurs aux dimensions minimales de découpe
+     * Complexité : O(1)
      * @param min, correspond aux dimensions minimales de découpe
      * @return le noeud à découper
      */

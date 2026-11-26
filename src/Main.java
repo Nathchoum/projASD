@@ -11,6 +11,12 @@ public class Main {
 
     public static List<String[]> tableau;
 
+    /**
+     * Permet de creer un tableau à 2 dimensions contenant des lignes du fichier texte d'entrée sous forme de String[]
+     * @param filename
+     * @return
+     * @throws IOException
+     */
     public static List<String[]> lis(String filename) throws IOException {
         List<String> listeLignes = Files.readAllLines(Paths.get(filename));
         String[] tabLignes = listeLignes.toArray(new String[0]);
@@ -22,6 +28,18 @@ public class Main {
         return tousLesElements;
     }
 
+    /**
+     * Méthode permettant de générer l'image en utilisant la première stratégie
+     * Complexité : O(nombreLigneFichier + nbFeuillesAdiviser * (log n + 2n) + n)
+     * @param largeur, largeur de l'image
+     * @param hauteur, hauteur de l'image
+     * @param nbFeuillesAdiviser
+     * @param minDimensionCoupe
+     * @param largeurLigne
+     * @param variante
+     * @param filename
+     * @throws IOException
+     */
     public static void generateTree(int largeur, int hauteur, int nbFeuillesAdiviser, int minDimensionCoupe, int largeurLigne, char variante, String filename) throws IOException {
         // étape 1 : récupère les arguments d'entrée
         tableau = lis(filename);
@@ -48,13 +66,24 @@ public class Main {
         Image image = new Image(largeur, hauteur);
         racine.toImage(image, largeurLigne);
         try {
-            image.save("Michel.png");
+            image.save("Resultat.png");
         } catch (IOException e) {
             System.err.println("Impossible de générer l'image. " + e.getMessage());
         }
     }
 
-
+    /**
+     *  Méthode permettant de générer l'image en utilisant notre stratégie
+     *  Commplexité : 0(nombreLigneFichier + nbFeuillesAdiviser * (2n)+ n)
+     * @param largeur
+     * @param hauteur
+     * @param nbFeuillesAdiviser
+     * @param minDimensionCoupe
+     * @param largeurLigne
+     * @param variante
+     * @param filename
+     * @throws IOException
+     */
     public static void generateBetterTree(int largeur, int hauteur, int nbFeuillesAdiviser, int minDimensionCoupe, int largeurLigne, char variante, String filename) throws IOException {
         // étape 1 : récupère les arguments d'entrée
         tableau = lis(filename);

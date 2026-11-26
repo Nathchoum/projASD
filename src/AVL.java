@@ -31,6 +31,7 @@ public class AVL {
 
     /**
      * Fonction permettant de retourner si l'AVL est vide ou pas.
+     * Complexité : O(1)
      * @return boolean
      */
     public boolean estVide() {
@@ -39,7 +40,7 @@ public class AVL {
 
     /**
      * Fonction retournant si oui ou non le noeud concerné est une feuille.
-     *
+     * Complexité : O(1)
      * @return boolean
      */
     public boolean estFeuille() {
@@ -51,8 +52,8 @@ public class AVL {
 
     /**
      * Fonction retournant la hauteur d'un noeud.
-     *
-     * @return int
+     * Complexité : O(n) avec le nombre de noeuds
+     * @return int, la hauteur
      */
     public int hauteur() {
         if (this.estVide()) {
@@ -71,7 +72,7 @@ public class AVL {
 
     /**
      * Procédure faisant la mise à jour de toutes les balances de l'AVL.
-     *
+     * Complexité : O(n) avec le nombre de noeuds
      */
     private void majBalance() {
         if (!(this.estVide())) {
@@ -88,7 +89,7 @@ public class AVL {
 
     /**
      * Fonction permettant d'ajouter un double à un AVL, cette fonction appellera majBalance() et Equilibrer() pour garder les propriétés de l'AVL
-     *
+     *  Complexité : O(n) avec le nombre de noeuds
      * @param p Le poids
      * @return AVL
      */
@@ -116,7 +117,7 @@ public class AVL {
 
     /**
      * Fonction faisant une ROTD sur un AVL et le renvoie.
-     *
+     * Complexité : O(1)
      * @return AVL
      */
     public AVL rotationDroite() {
@@ -140,7 +141,7 @@ public class AVL {
 
     /**
      * Fonction faisant une ROTG sur un AVL et le renvoie.
-     *
+     * Complexité : O(1)
      * @return AVL
      */
     public AVL rotationGauche() {
@@ -165,7 +166,7 @@ public class AVL {
 
     /**
      * Fonction faisant une DROTD sur un AVL et le renvoie
-     *
+     * Complexité : O(1)
      * @return AVL
      */
     public AVL doubleRotationDroite() {
@@ -178,7 +179,7 @@ public class AVL {
 
     /**
      * Fonction faisant une DROTG sur un AVL et le renvoie
-     *
+     * Complexité : O(1)
      * @return AVL
      */
     public AVL doubleRotationGauche() {
@@ -191,7 +192,7 @@ public class AVL {
 
     /**
      * Fonction équilibrant un AVL pour lui faire conserver ses conditions et le retourne.
-     *
+     * Complexité : O(n) avec le nombre de feuilles
      * @return AVL
      */
     public AVL equilibre() {
@@ -216,7 +217,7 @@ public class AVL {
 
     /**
      * Fonction permettant de supprimer le maximum d'un AVL et renvoie l'arbre après suppression
-     *
+     * Complexité : O(log n) avec n le nombre de noeuds
      * @return
      */
     public Tree2D chooseFeuille(int min) {

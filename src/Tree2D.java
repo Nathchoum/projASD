@@ -47,6 +47,7 @@ public class Tree2D {
 
     /**
      *Permet de calculer le poids d'un nœud, afin de l'envoyer dans l'avl
+     * Complexité : O(1)
      * @return le poids d'un nœud
      */
     public double CalculPoids(){
@@ -56,6 +57,7 @@ public class Tree2D {
 
     /**
      * Permet de choisir la couleur d'un noeud en fonction de la lettre donnée dans le fichier d'entrée
+     * Complexité : O(1)
      * @param lettre donné dans le fichier d'entrée
      * @return la couleur à appliquer au noeud
      */
@@ -91,6 +93,7 @@ public class Tree2D {
 
     /**
      * Vérifie si le noeud est une feuille ou non
+     * Complexité : O(1)
      * @return un boolean
      */
     public boolean estFeuille(){
@@ -99,6 +102,7 @@ public class Tree2D {
 
     /**
      * Parcoure l'arbre pour peindre les rectangles et les lignes sur l'image
+     * Complexité : O(n) avec n le nombre de noeuds
      * @param image, une image vierge créée dans le Main
      * @param largeurLigne
      */
@@ -129,6 +133,7 @@ public class Tree2D {
 
     /**
      * Choisis l'axe sur lequel le noeud sera découpé et créé les fils résultants de cette divisoion
+     * Complexité : O(1)
      * @param variante, A ou B en fonction du paramètre donné dans la commande
      * @param ligne, ligne de découpe du fichier d'entrée
      * @param tableau, tableau contenant toutes les lignes du fichier d'entrée
