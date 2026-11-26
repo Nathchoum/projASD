@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Main {
 
-    public static List<String[]> pablo;
+    public static List<String[]> tableau;
 
     public static List<String[]> lis(String filename) throws IOException {
         List<String> listeLignes = Files.readAllLines(Paths.get(filename));
@@ -24,8 +24,8 @@ public class Main {
 
     public static void generateTree(int largeur, int hauteur, int nbFeuillesAdiviser, int minDimensionCoupe, int largeurLigne, char variante, String filename) throws IOException {
         // étape 1 : récupère les arguments d'entrée
-        pablo = lis(filename);
-        //étape 2 : création tree2D ( nom origine ) avec les parametress de w et de h donné en entrée
+        tableau = lis(filename);
+        //étape 2 : création tree2D ( nom origine ) avec les paramètres de w et de h donné en entrée
         Tree2D racine = new Tree2D(largeur, hauteur);
         // On insère la première feuille dans l'AVL
         AVL avlracine = new AVL(racine.CalculPoids(), racine);
@@ -34,7 +34,7 @@ public class Main {
         for (int j = 0; j < nbFeuillesAdiviser; j++) {
             Tree2D noeudACouper = avlracine.chooseFeuille(minDimensionCoupe);
             if (noeudACouper != null) {
-                noeudACouper.chooseDivision(variante, j, pablo);
+                noeudACouper.chooseDivision(variante, j, tableau);
 
                 // étape 3 : calculPoids du noeud, puis créer l'AVL avec ce poids
                 // Besoin d'actualisé l'avlracine à chaque appelle de "ajouter()" sinon on perd une partie des informations
@@ -57,18 +57,18 @@ public class Main {
 
     public static void generateBetterTree(int largeur, int hauteur, int nbFeuillesAdiviser, int minDimensionCoupe, int largeurLigne, char variante, String filename) throws IOException {
         // étape 1 : récupère les arguments d'entrée
-        pablo = lis(filename);
+        tableau = lis(filename);
         //étape 2 : création tree2DP avec les parametress de w et de h donné en entrée
         Tree2DP racine = new Tree2DP(largeur, hauteur);
         //étape 3 : On crée la Pile et on y ajoute la première feuille
         Tree2Pile pile = new Tree2Pile();
         pile.ajouter(racine);
 
-        // (début de la boucle, tant que nbNoeudADIviser n'est pas atteint)
+        // début de la boucle, tant que nbNoeudADIviser n'est pas atteint
         for (int j = 0; j < nbFeuillesAdiviser; j++) {
             Tree2DP noeudACouper = pile.chooseFeuille(minDimensionCoupe);
             if (noeudACouper != null) {
-                noeudACouper.chooseDivision(variante, j, pablo);
+                noeudACouper.chooseDivision(variante, j, tableau);
 
                 // On empile les nouveaux noeuds
                 pile.ajouter(noeudACouper.getG());
@@ -80,7 +80,7 @@ public class Main {
         Image image = new Image(largeur, hauteur);
         racine.toImage(image, largeurLigne);
         try {
-            image.save("Michel.png");
+            image.save("Resultat.png");
         } catch (IOException e) {
             System.err.println("Impossible de générer l'image. " + e.getMessage());
         }
